@@ -1,0 +1,18 @@
+@WorkspaceReservas_HostAddress = http://localhost:5189
+
+GET {{WorkspaceReservas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+POST {{WorkspaceReservas_HostAddress}}/api/sala
+Content-Type: application/json
+
+{
+  "Nome": "Sala 1 - teste",
+  "Capacidade": 50,
+  "PrecoPorHora": 100.00,
+  "Ativo": true
+}
+
+###
