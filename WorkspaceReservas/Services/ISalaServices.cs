@@ -4,11 +4,11 @@ namespace WorkspaceReservas.Services
 {
     public interface ISalaServices
     {
-        SalaDTO create(SalaDTO sala);
-        SalaDTO update(int id, SalaDTO sala);
-        SalaDTO delete(int id);
-        SalaDTO get(int id);
-        List<SalaDTO> list();
+        SalaDTO Create(SalaDTO sala);
+        SalaDTO Update(SalaDTO sala);
+        SalaDTO Delete(long id);
+        SalaDTO FindById(long id);
+        List<SalaDTO> FindAll();
 
 
     }

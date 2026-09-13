@@ -12,7 +12,7 @@ using WorkspaceReservas.Models.Context;
 namespace WorkspaceReservas.Migrations
 {
     [DbContext(typeof(PostgreSQLContext))]
-    [Migration("20260911193244_InitialCreate")]
+    [Migration("20260912232307_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

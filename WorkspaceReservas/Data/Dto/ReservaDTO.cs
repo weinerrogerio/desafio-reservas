@@ -2,7 +2,8 @@
 {
     public class ReservaDTO
     {
-        public int IdSalaFk { get; set; }
+        public long Id { get; set; }
+        public long IdSalaFk { get; set; }
         public required string NomeCliente { get; set; }
         public DateTime Inicio { get; set; }
         public DateTime Fin { get; set; }

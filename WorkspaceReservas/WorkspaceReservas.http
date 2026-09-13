@@ -16,3 +16,28 @@ Content-Type: application/json
 }
 
 ###
+
+PATCH {{WorkspaceReservas_HostAddress}}/api/sala
+Content-Type: application/json
+
+{
+  "Id": 1,
+  "Nome": "Sala 1 - teste atualizada",
+  "Capacidade": 60,
+  "PrecoPorHora": 120.00,
+  "Ativo": true
+}
+
+###
+
+GET {{WorkspaceReservas_HostAddress}}/api/sala/1
+
+###
+
+GET {{WorkspaceReservas_HostAddress}}/api/sala
+
+###
+
+DELETE {{WorkspaceReservas_HostAddress}}/api/sala/1
+
+###
