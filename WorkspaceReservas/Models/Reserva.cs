@@ -14,10 +14,10 @@ namespace WorkspaceReservas.Models
         public required string NomeCliente { get; set; }
 
         [Column("inicio")]
-        public DateTime Inicio { get; set; }
+        public DateTime DataHoraInicio { get; set; }
 
         [Column("fin")]
-        public DateTime Fin { get; set; }
+        public DateTime DataHoraFim { get; set; }
 
         [Column("valor_total")]
         public decimal ValorTotal { get; set; }

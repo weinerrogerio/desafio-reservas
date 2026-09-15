@@ -5,9 +5,9 @@
         public long Id { get; set; }
         public long IdSalaFk { get; set; }
         public required string NomeCliente { get; set; }
-        public DateTime Inicio { get; set; }
-        public DateTime Fin { get; set; }
+        public DateTime DataHoraInicio { get; set; }
+        public DateTime DataHoraFim { get; set; }
         public decimal ValorTotal { get; set; }
-        public bool status { get; set; }
+        public bool status { get; set; } = true; // padrao true
     }
 }

@@ -1,9 +1,12 @@
+using FluentValidation.AspNetCore;
 using AutoMapper;
 using Serilog;
 using WorkspaceReservas.Configurations;
 using WorkspaceReservas.Models;
 using WorkspaceReservas.Services;
 using WorkspaceReservas.Services.Implementations;
+using WorkspaceReservas.Utils;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,14 +17,16 @@ builder.AddSerilogLogging();
 builder.Services.AddScoped<ISalaServices, SalaServicesImpl>();
 builder.Services.AddScoped<IReservaServices, ReservaServicesImpl>();
 
-Log.Information("CONECTANDO AO BANCO.........................");
 
 //Conexão com o banco
 builder.Services.AddDataBaseConfig(builder.Configuration);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-Log.Information("SUCESSO AO SE CONECTAR AO BANCO.................................");
-
+//Adicionando o FluentValidation e registrando os validadores
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<SalaRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<SalaUpdateDTOValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ReservaRequestValidator>();
 
 builder.Services.AddControllers();
 

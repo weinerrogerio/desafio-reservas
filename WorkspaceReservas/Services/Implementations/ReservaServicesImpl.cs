@@ -16,44 +16,74 @@ namespace WorkspaceReservas.Services.Implementations
         {
             _context = context;
         }
-        public ReservaDTO Create(ReservaDTO reserva)
+        public async Task<ServiceResult<ReservaDTO>> Create(ReservaDTO reserva)
         {
-            if (reserva == null) return null;
-            var entity = reserva.Adapt<Reserva>(); // DTO -> Entidade
+            bool existeConflito = await _context.Reservas
+                .AnyAsync(r => r.IdSalaFk == reserva.IdSalaFk &&
+                               reserva.DataHoraInicio < r.DataHoraFim &&
+                               reserva.DataHoraFim > r.DataHoraInicio);
+
+            if ( existeConflito )
+                return ServiceResult<ReservaDTO>.Fail("Sala", "Já existe uma reserva nesse horário para essa sala.");
+
+            var sala = await _context.Salas.FindAsync(reserva.IdSalaFk);
+            if ( sala == null )
+                return ServiceResult<ReservaDTO>.Fail("IdSalaFk", "Sala não encontrada.");
+
+            var duracaoHoras = ( reserva.DataHoraFim - reserva.DataHoraInicio ).TotalHours;
+            reserva.ValorTotal = ( decimal ) duracaoHoras * sala.PrecoPorHora;
+
+            var entity = reserva.Adapt<Reserva>();
             _context.Reservas.Add(entity);
-            _context.SaveChanges();
-            return entity.Adapt<ReservaDTO>(); // Entidade -> DTO
+            await _context.SaveChangesAsync();
+
+            return ServiceResult<ReservaDTO>.Ok(entity.Adapt<ReservaDTO>());
         }
 
-        public ReservaDTO Update(ReservaDTO reserva)
+        public async Task<ReservaDTO> Update(ReservaDTO reserva)
         {
             if (reserva == null) return null;
-            var existing = _context.Reservas.Find(reserva.Id);
+            var existing = await _context.Reservas.FindAsync(reserva.Id);
             if (existing == null) return null;
             _context.Entry(existing).CurrentValues.SetValues(reserva);
             _context.SaveChanges();
             return reserva;
         }
 
-        public ReservaDTO Delete(int id)
+        public async Task<ReservaDTO> Delete(int id)
         {
-            var existing = _context.Reservas.Find(id);
+            var existing = await _context.Reservas.FindAsync(id);
             if (existing == null) return null;
             _context.Reservas.Remove(existing);
             _context.SaveChanges();
             return existing.Adapt<ReservaDTO>();
         }
 
-        public ReservaDTO? FindById(int id)
+        public async Task<ReservaDTO> FindById(int id)
         {
-            var entity = _context.Reservas.AsNoTracking().FirstOrDefault(r => r.Id == id);
+            var entity = await _context.Reservas.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
             return entity?.Adapt<ReservaDTO>();
         }
 
-        public List<ReservaDTO> FindAll()
+        public async Task<List<ReservaDTO>> FindAll()
         {
-            var entities = _context.Reservas.AsNoTracking().ToList();
+            var entities = await _context.Reservas.AsNoTracking().ToListAsync();
             return entities.Adapt<List<ReservaDTO>>();
         }
+    }
+
+    public class ServiceResult<T>
+    {
+        public bool Success { get; private set; }
+        public T? Data { get; private set; }
+        public Dictionary<string, string[]> Errors { get; private set; } = new();
+
+        public static ServiceResult<T> Ok(T data) => new() { Success = true, Data = data };
+
+        public static ServiceResult<T> Fail(string campo, string mensagem) => new()
+        {
+            Success = false,
+            Errors = new Dictionary<string, string[]> { { campo, new[] { mensagem } } }
+        };
     }
 }

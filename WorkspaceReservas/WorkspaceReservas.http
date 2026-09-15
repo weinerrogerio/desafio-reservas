@@ -9,10 +9,9 @@ POST {{WorkspaceReservas_HostAddress}}/api/sala
 Content-Type: application/json
 
 {
-  "Nome": "Sala 1 - teste",
-  "Capacidade": 50,
-  "PrecoPorHora": 100.00,
-  "Ativo": true
+  "Nome": "Sala 4 - teste",
+  "Capacidade": -10,
+  "PrecoPorHora": 100.00
 }
 
 ###
@@ -21,16 +20,13 @@ PATCH {{WorkspaceReservas_HostAddress}}/api/sala
 Content-Type: application/json
 
 {
-  "Id": 1,
-  "Nome": "Sala 1 - teste atualizada",
-  "Capacidade": 60,
-  "PrecoPorHora": 120.00,
-  "Ativo": true
+  "Id": 6,
+  "ativo": false
 }
 
 ###
 
-GET {{WorkspaceReservas_HostAddress}}/api/sala/1
+GET {{WorkspaceReservas_HostAddress}}/api/sala/2
 
 ###
 
@@ -38,6 +34,26 @@ GET {{WorkspaceReservas_HostAddress}}/api/sala
 
 ###
 
-DELETE {{WorkspaceReservas_HostAddress}}/api/sala/1
+DELETE {{WorkspaceReservas_HostAddress}}/api/sala/5
+
+###
+
+PUT {{WorkspaceReservas_HostAddress}}/api/sala/6/reativar
+
+###
+
+POST {{WorkspaceReservas_HostAddress}}/api/reserva
+Content-Type: application/json
+
+{
+  "IdSalaFk": 2,
+  "NomeCliente": "Teste",
+  "DataHoraInicio": "2026-09-20T20:00:00",
+  "DataHoraFim": "2026-09-20T20:01:00" 
+}
+
+###
+
+GET {{WorkspaceReservas_HostAddress}}/api/reserva
 
 ###

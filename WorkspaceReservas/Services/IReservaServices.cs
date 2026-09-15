@@ -1,13 +1,14 @@
 ﻿using WorkspaceReservas.Data.Dto;
+using WorkspaceReservas.Services.Implementations;
 
 namespace WorkspaceReservas.Services
 {
     public interface IReservaServices
     {
-        ReservaDTO Create(ReservaDTO reserva);
-        ReservaDTO Update(ReservaDTO reserva);
-        ReservaDTO Delete(int id);
-        ReservaDTO FindById(int id);
-        List<ReservaDTO> FindAll();
+        Task<ServiceResult<ReservaDTO>> Create(ReservaDTO reserva);
+        Task<ReservaDTO> Update(ReservaDTO reserva);
+        Task<ReservaDTO> Delete(int id);
+        Task<ReservaDTO> FindById(int id);
+        Task<List<ReservaDTO>> FindAll();
     }
 }
