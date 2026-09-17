@@ -22,18 +22,27 @@ namespace WorkspaceReservas.Controllers
         //[ProducesResponseType(409)]
         public async Task<IActionResult> Create([FromBody] ReservaDTO reserva)
         {
-            // Aqui você pode chamar o serviço para criar a reserva
-            var createdReserva = await _reservaService.Create(reserva);
-            if (createdReserva == null) return BadRequest("Não foi possível criar a reserva.");
-            return Ok(createdReserva); // Retorna a reserva criada (ou algum outro resultado)
+            var result = await _reservaService.Create(reserva);
+            if ( !result.Success )
+            {
+                return BadRequest(result.Errors); // Retorna HTTP 400 com os erros detalhados
+            }
+            return CreatedAtAction(nameof(FindById), new { id = result.Data!.Id }, result.Data); // Retorna HTTP 201 Created
         }
 
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ReservaDTO reserva)
         {
-            var updatedReserva = await _reservaService.Update(reserva);
-            if (updatedReserva == null) return BadRequest("Não foi possível atualizar a reserva.");
-            return Ok(updatedReserva);
+            //var updatedReserva = await _reservaService.Update(reserva);
+            //if (updatedReserva == null) return BadRequest("Não foi possível atualizar a reserva.");
+            //return Ok(updatedReserva);
+
+            var result = await _reservaService.Update(reserva);
+            if (!result.Success)
+            {
+                return BadRequest(result.Errors); // Retorna HTTP 400 com os erros detalhados
+            }
+            return Ok(result.Data);
         }
 
 

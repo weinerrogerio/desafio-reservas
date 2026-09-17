@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using WorkspaceReservas.Data.Dto;
 using WorkspaceReservas.Models;
 using WorkspaceReservas.Models.Context;
+using WorkspaceReservas.Utils;
 
 namespace WorkspaceReservas.Services.Implementations
 {
@@ -36,26 +37,30 @@ namespace WorkspaceReservas.Services.Implementations
             var entity = reserva.Adapt<Reserva>();
             _context.Reservas.Add(entity);
             await _context.SaveChangesAsync();
-
             return ServiceResult<ReservaDTO>.Ok(entity.Adapt<ReservaDTO>());
         }
 
-        public async Task<ReservaDTO> Update(ReservaDTO reserva)
+        public async Task<ServiceResult<ReservaDTO>> Update(ReservaDTO reserva)
         {
-            if (reserva == null) return null;
+            if ( reserva == null )
+                return ServiceResult<ReservaDTO>.Fail("Reserva", "Dados da reserva não informados.");
+
             var existing = await _context.Reservas.FindAsync(reserva.Id);
-            if (existing == null) return null;
+            if ( existing == null )
+                return ServiceResult<ReservaDTO>.Fail("Id", "Reserva não encontrada.");
+
             _context.Entry(existing).CurrentValues.SetValues(reserva);
-            _context.SaveChanges();
-            return reserva;
+            await _context.SaveChangesAsync();
+
+            return ServiceResult<ReservaDTO>.Ok(existing.Adapt<ReservaDTO>());
         }
 
         public async Task<ReservaDTO> Delete(int id)
         {
             var existing = await _context.Reservas.FindAsync(id);
-            if (existing == null) return null;
+            if ( existing == null ) return null;
             _context.Reservas.Remove(existing);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return existing.Adapt<ReservaDTO>();
         }
 
@@ -71,19 +76,19 @@ namespace WorkspaceReservas.Services.Implementations
             return entities.Adapt<List<ReservaDTO>>();
         }
     }
-
-    public class ServiceResult<T>
-    {
-        public bool Success { get; private set; }
-        public T? Data { get; private set; }
-        public Dictionary<string, string[]> Errors { get; private set; } = new();
-
-        public static ServiceResult<T> Ok(T data) => new() { Success = true, Data = data };
-
-        public static ServiceResult<T> Fail(string campo, string mensagem) => new()
-        {
-            Success = false,
-            Errors = new Dictionary<string, string[]> { { campo, new[] { mensagem } } }
-        };
-    }
 }
+//    public class ServiceResult<T>
+//    {
+//        public bool Success { get; private set; }
+//        public T? Data { get; private set; }
+//        public Dictionary<string, string[]> Errors { get; private set; } = new();
+
+//        public static ServiceResult<T> Ok(T data) => new() { Success = true, Data = data };
+
+//        public static ServiceResult<T> Fail(string campo, string mensagem) => new()
+//        {
+//            Success = false,
+//            Errors = new Dictionary<string, string[]> { { campo, new[] { mensagem } } }
+//        };
+//    }
+//}

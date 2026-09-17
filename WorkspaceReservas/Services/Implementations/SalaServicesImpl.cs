@@ -21,12 +21,13 @@ namespace WorkspaceReservas.Services.Implementations
             _context = context;
         }        
 
-        public async Task<SalaDTO> Create(SalaDTO sala)
+        public async Task<ServiceResult<SalaDTO>> Create(SalaDTO sala)
         {      
             var entity = sala.Adapt<Sala>();
             _context.Salas.Add(entity);
             await _context.SaveChangesAsync();
-            return await Task.FromResult(entity.Adapt<SalaDTO>());
+            //return ServiceResult<ReservaDTO>.Ok(entity.Adapt<ReservaDTO>());
+            return ServiceResult<SalaDTO>.Ok(entity.Adapt<SalaDTO>());
         }
 
 
@@ -36,7 +37,7 @@ namespace WorkspaceReservas.Services.Implementations
             var existing = await _context.Salas.FindAsync(sala.Id);
             if (existing == null) return null;
             _context.Entry(existing).CurrentValues.SetValues(sala);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return sala;
         }
 
@@ -45,7 +46,7 @@ namespace WorkspaceReservas.Services.Implementations
             var existing = await _context.Salas.FindAsync(id);
             if (existing == null) return null;
             _context.Salas.Remove(existing);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return existing.Adapt<SalaDTO>();
         }
 
