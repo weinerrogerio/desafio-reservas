@@ -79,33 +79,33 @@ namespace WorkspaceReservas.Controllers
                 Ativo = sala.Ativo ?? existente.Ativo
             };
 
-            var updatedSala = _salaService.Update(toUpdate);
+            var updatedSala = await _salaService.Update(toUpdate);
             if (updatedSala == null) return BadRequest("Não foi possível atualizar a sala.");
             return Ok(updatedSala);
         }
 
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var deletedSala = _salaService.Delete(id);
+            var deletedSala = await _salaService.Delete(id);
             if (deletedSala == null) return NotFound("Sala não encontrada.");
             return Ok(deletedSala);
         }
 
 
         [HttpGet("{id}")]
-        public IActionResult FindById(int id)
+        public async Task<IActionResult> FindById(int id)
         {
-            var sala = _salaService.FindById(id);
+            var sala = await _salaService.FindById(id);
             if (sala == null) return NotFound("Sala não encontrada.");
             return Ok(sala);
         }
 
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var salas = _salaService.FindAll();
+            var salas = await _salaService.FindAll();
             return Ok(salas);
         }
 

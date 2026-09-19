@@ -9,6 +9,8 @@ namespace WorkspaceReservas.Models.Context
 
         public DbSet<Sala> Salas { get; set; }
         public DbSet<Reserva> Reservas { get; set; }
+        public DbSet<Consulta> Consultas { get; set; }
+        public DbSet<Medico> Medicos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

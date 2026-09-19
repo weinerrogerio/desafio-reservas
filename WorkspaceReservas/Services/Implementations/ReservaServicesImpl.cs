@@ -51,7 +51,6 @@ namespace WorkspaceReservas.Services.Implementations
 
             _context.Entry(existing).CurrentValues.SetValues(reserva);
             await _context.SaveChangesAsync();
-
             return ServiceResult<ReservaDTO>.Ok(existing.Adapt<ReservaDTO>());
         }
 

@@ -16,6 +16,7 @@ builder.AddSerilogLogging();
 // Add services to the container.
 builder.Services.AddScoped<ISalaServices, SalaServicesImpl>();
 builder.Services.AddScoped<IReservaServices, ReservaServicesImpl>();
+builder.Services.AddScoped<IMedicosServices, MedicosServicesImpl>();
 
 
 //Conexão com o banco

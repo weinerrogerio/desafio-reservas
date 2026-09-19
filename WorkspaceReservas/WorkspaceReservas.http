@@ -52,8 +52,27 @@ Content-Type: application/json
   "DataHoraFim": "2026-09-20T20:01:00" 
 }
 
-###
+### -- ROTAS DE RESERVAS
 
 GET {{WorkspaceReservas_HostAddress}}/api/reserva
 
+### --- FIM - ROTAS DE RESERVAS
 ###
+
+POST {{WorkspaceReservas_HostAddress}}/api/medicos
+Content-type: application/json
+
+{
+  "Nome" :"Teste",
+  "CRM": "31321321321",
+  "Especialidade": "ESPECIALIDADE - Teste"
+}
+
+###
+
+PATCH {{WorkspaceReservas_HostAddress}}/api/medicos/1
+Content-Type: application/json
+
+{
+  "Especialidade": "especialidade - Teste"
+}
