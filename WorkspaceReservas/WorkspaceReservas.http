@@ -74,5 +74,5 @@ PATCH {{WorkspaceReservas_HostAddress}}/api/medicos/1
 Content-Type: application/json
 
 {
-  "Especialidade": "especialidade - Teste"
+  "Especialidade": "especialidade - Teste2"
 }

@@ -4,7 +4,7 @@ namespace WorkspaceReservas.Data.Dto.UpdateDTO
 {
     public class MedicoUpdateDTO
     {
-        public int Id { get; set; }
+        //public long Id { get; set; }
         public string? Nome { get; set; }
         public string? CRM { get; set; }
         public string? Especialidade { get; set; }

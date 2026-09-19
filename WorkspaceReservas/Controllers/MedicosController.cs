@@ -1,7 +1,9 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using WorkspaceReservas.Data.Dto;
 using WorkspaceReservas.Data.Dto.UpdateDTO;
+using WorkspaceReservas.Models;
 using WorkspaceReservas.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -34,26 +36,9 @@ namespace WorkspaceReservas.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update(long id, [FromBody] MedicoUpdateDTO medico)
         {
-            var findResult = await _medicosService.FindById(id);
-            if (findResult.IsFailed) return NotFound("Médico não encontrado.");
-
-            var medicoExists = findResult.Value;
-
-            // Validar campos obrigatórios se foram enviados
-            if (!string.IsNullOrWhiteSpace(medico.Nome) && string.IsNullOrEmpty(medico.Nome.Trim()))
-                return BadRequest("Nome não pode ser vazio.");
-
-            if (!string.IsNullOrWhiteSpace(medico.CRM) && string.IsNullOrEmpty(medico.CRM.Trim()))
-                return BadRequest("CRM não pode ser vazio.");
-
-            // Aplica alterações do MedicoUpdateDTO sobre o MedicoDTO existente
-            medico.Adapt(medicoExists);
-
-            var result = await _medicosService.Update(medicoExists);
+            var result = await _medicosService.Update(id, medico);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors.Select(e => e.Message));
-            }
             return Ok(result.Value);
         }
 

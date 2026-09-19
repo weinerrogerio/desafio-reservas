@@ -1,12 +1,14 @@
-using FluentValidation.AspNetCore;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Mapster;
 using Serilog;
 using WorkspaceReservas.Configurations;
+using WorkspaceReservas.Data.Dto.UpdateDTO;
 using WorkspaceReservas.Models;
 using WorkspaceReservas.Services;
 using WorkspaceReservas.Services.Implementations;
 using WorkspaceReservas.Utils;
-using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<SalaUpdateDTOValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<ReservaRequestValidator>();
 
 builder.Services.AddControllers();
+
+// Mapeamento de objetos usando AutoMapper - geral
+TypeAdapterConfig.GlobalSettings.Default.IgnoreNullValues(true);
 
 var app = builder.Build();
 

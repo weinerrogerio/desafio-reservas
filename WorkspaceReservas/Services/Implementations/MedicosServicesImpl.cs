@@ -37,19 +37,24 @@ namespace WorkspaceReservas.Services.Implementations
             _context.Medicos.Add(entity);
             await _context.SaveChangesAsync();
             return Result.Ok(entity.Adapt<MedicoDTO>());
-        }
+        }        
 
-        public async Task<FluentResults.Result<MedicoUpdateDTO>> Update(MedicoUpdateDTO medico)
+        public async Task<FluentResults.Result<MedicoDTO>> Update(long id, MedicoUpdateDTO dto)
         {
-            if (medico == null) return Result.Fail<MedicoUpdateDTO>("O objeto médico não pode ser nulo.");
-            var entity = await _context.Medicos.FindAsync(medico.Id);
-            if (entity == null) return Result.Fail<MedicoUpdateDTO>("Médico não encontrado.");
-            // O Mapster copia AUTOMATICAMENTE todas as propriedades do DTO para a Entity mapeada
-            //medico.Adapt(entity);
-            // validação ja foi feita no controller, mas caso queira validar novamente- fazer antes de salvar no banco de dados (set values)
-            _context.Entry(entity).CurrentValues.SetValues(medico);
+            if (dto == null) return Result.Fail<MedicoDTO>("O objeto médico não pode ser nulo.");
+
+            var entity = await _context.Medicos.FindAsync(id);
+            if (entity == null) return Result.Fail<MedicoDTO>("Médico não encontrado.");
+
+            if (dto.Nome != null && string.IsNullOrWhiteSpace(dto.Nome))
+                return Result.Fail<MedicoDTO>("Nome não pode ser vazio.");
+            if (dto.CRM != null && string.IsNullOrWhiteSpace(dto.CRM))
+                return Result.Fail<MedicoDTO>("CRM não pode ser vazio.");
+
+            dto.Adapt(entity); // copia só os campos não nulos para a entidade existente
+
             await _context.SaveChangesAsync();
-            return Result.Ok(entity.Adapt<MedicoUpdateDTO>());
+            return Result.Ok(entity.Adapt<MedicoDTO>());
         }
 
         public async Task<FluentResults.Result<MedicoDTO>> Delete(long id)
