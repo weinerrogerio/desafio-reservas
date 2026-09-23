@@ -8,7 +8,9 @@ namespace WorkspaceReservas.Models
     {
         [Column("id_medico_fk")]
         [ForeignKey("Medico")]
-        public int MedicoIdFk { get; set; }
+        public long MedicoIdFk { get; set; }
+
+        public Medico Medico { get; set; }
 
         [Column("nome_paciente")]
         public string NomePaciente { get; set; }

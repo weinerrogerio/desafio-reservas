@@ -20,5 +20,7 @@ namespace WorkspaceReservas.Models
 
         [Column("ativo")]
         public bool Ativo { get; set; } = true;
+
+        public ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
     }
 }

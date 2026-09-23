@@ -57,14 +57,15 @@ Content-Type: application/json
 GET {{WorkspaceReservas_HostAddress}}/api/reserva
 
 ### --- FIM - ROTAS DE RESERVAS
-###
+
+### --- ROTAS DE MEDICOS
 
 POST {{WorkspaceReservas_HostAddress}}/api/medicos
 Content-type: application/json
 
 {
-  "Nome" :"Teste",
-  "CRM": "31321321321",
+  "Nome" :"Teste2",
+  "CRM": "1234",
   "Especialidade": "ESPECIALIDADE - Teste"
 }
 
@@ -76,3 +77,40 @@ Content-Type: application/json
 {
   "Especialidade": "especialidade - Teste2"
 }
+
+### --- FIM - ROTAS DE MEDICOS
+
+
+### --- ROTAS DE CONSULTAS
+
+POST {{WorkspaceReservas_HostAddress}}/api/consultas
+Content-Type: application/json
+
+{  
+  "MedicoIdFk": 1,
+  "NomePaciente": "Teste",
+  "DataHoraInicio": "2026-09-23T18:00:00",
+  "DataHoraFim": "2026-09-23T18:21:00" 
+}
+
+###
+
+PATCH {{WorkspaceReservas_HostAddress}}/api/consultas/3
+Content-Type: application/json
+
+{  
+  "MedicoIdFk": 2,
+  "NomePaciente": "Teste2"
+}
+
+###
+
+DELETE {{WorkspaceReservas_HostAddress}}/api/consultas/3
+
+
+
+
+###
+
+
+

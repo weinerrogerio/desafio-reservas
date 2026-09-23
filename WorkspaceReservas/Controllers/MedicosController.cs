@@ -11,7 +11,7 @@ namespace WorkspaceReservas.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicosController :ControllerBase
+    public class MedicosController : ControllerBase
     {
         private readonly IMedicosServices _medicosService;
         public MedicosController(IMedicosServices medicosService)

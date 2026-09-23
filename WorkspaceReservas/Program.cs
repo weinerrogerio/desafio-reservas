@@ -19,6 +19,7 @@ builder.AddSerilogLogging();
 builder.Services.AddScoped<ISalaServices, SalaServicesImpl>();
 builder.Services.AddScoped<IReservaServices, ReservaServicesImpl>();
 builder.Services.AddScoped<IMedicosServices, MedicosServicesImpl>();
+builder.Services.AddScoped<IConsultaServices, ConsultaServicesImpl>();
 
 
 //Conexão com o banco
@@ -28,8 +29,9 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 //Adicionando o FluentValidation e registrando os validadores
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SalaRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<SalaUpdateDTOValidator>();
+//builder.Services.AddValidatorsFromAssemblyContaining<SalaUpdateValidator>();// não é necessário, pois o FluentValidation já valida os campos não nulos do DTO de atualização
 builder.Services.AddValidatorsFromAssemblyContaining<ReservaRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ConsultaRequestValidator>();
 
 builder.Services.AddControllers();
 

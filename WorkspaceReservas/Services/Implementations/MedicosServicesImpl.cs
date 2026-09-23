@@ -21,10 +21,10 @@ namespace WorkspaceReservas.Services.Implementations
         {
             if (medico == null) return Result.Fail<MedicoDTO>("O objeto médico não pode ser nulo.");
 
-            if (string.IsNullOrWhiteSpace(medico.Nome) || string.IsNullOrWhiteSpace(medico.CRM))
-            {
-                return Result.Fail<MedicoDTO>("O nome e o CRM do médico não podem ser vazios.");
-            }
+            //if (string.IsNullOrWhiteSpace(medico.Nome) || string.IsNullOrWhiteSpace(medico.CRM))
+            //{
+            //    return Result.Fail<MedicoDTO>("O nome e o CRM do médico não podem ser vazios.");
+            //}
 
             bool existeConflito = await _context.Medicos.AnyAsync(
                 m => m.CRM == medico.CRM &&

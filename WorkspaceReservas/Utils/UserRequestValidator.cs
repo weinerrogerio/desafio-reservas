@@ -4,6 +4,10 @@ using WorkspaceReservas.Data.Dto.UpdateDTO;
 using WorkspaceReservas.Models;
 using WorkspaceReservas.Models.Base;
 
+
+// -------------------------------------- UTILIZADO PARA REGRAS COM FLUENT VALIDATION!!!
+//obs ao criar nova classe de regras NovaClasse: AbstractValidator<NovoObjeto> não esquecer de registrar no Program.cs com builder.Services.AddValidatorsFromAssemblyContaining<NovaClasse>();
+
 namespace WorkspaceReservas.Utils
 { 
     //public class BaseRequestValidator<T> : AbstractValidator<T> where T : BaseEntity
@@ -35,9 +39,9 @@ namespace WorkspaceReservas.Utils
         }
     }
 
-    public class SalaUpdateDTOValidator : AbstractValidator<SalaUpdateDTO>
+    public class SalaUpdateValidator : AbstractValidator<SalaUpdateDTO>
     {
-        public SalaUpdateDTOValidator()
+        public SalaUpdateValidator()
         {
             RuleFor(x => x.Id)
                 .GreaterThan(0)
@@ -93,4 +97,73 @@ namespace WorkspaceReservas.Utils
                 .WithMessage("Duration must be between 30 minutes and 8 hours.");
         }
     }
+
+    public class MedicoRequestValidator : AbstractValidator<MedicoDTO>
+    {
+        public MedicoRequestValidator()
+        {
+            RuleFor(x => x.Nome)
+                .NotEmpty()
+                .WithMessage("Name is required.");
+            RuleFor(x => x.CRM)
+                .NotEmpty()
+                .WithMessage("CRM is required.")
+                .MinimumLength(4)
+                .WithMessage("CRM must be at least 4 characters long.");
+        }
+    }
+
+    public class ConsultaRequestValidator : AbstractValidator<ConsultaDTO>
+    {
+        public ConsultaRequestValidator()
+        {
+            RuleFor(x => x.NomePaciente)
+                .NotEmpty()
+                .WithMessage("Patient name is required.");
+
+            RuleFor(x => x.MedicoIdFk)
+                .GreaterThan(0)
+                .WithMessage("Doctor ID must be greater than zero.");
+
+            RuleFor(x => x.DataHoraInicio)
+                .GreaterThan(DateTime.Now)
+                .WithMessage("Start time must be in the future or today.");
+
+            RuleFor(x => x.DataHoraFim)
+                .GreaterThan(x => x.DataHoraInicio)
+                .WithMessage("End time must be greater than start time.");
+
+            RuleFor(x => x.DataHoraFim)
+                .Must((consulta, fim) => ( fim - consulta.DataHoraInicio ) >= TimeSpan.FromMinutes(20))
+                .WithMessage("Duration must be at least 20 minutes.");
+        }
+    }
+
+    //rever se precisa
+    //public class ConsultaRequestUpdateValidator : AbstractValidator<ConsultaUpdateDTO>
+    //{
+    //    public ConsultaRequestUpdateValidator()
+    //    {
+    //        RuleFor(x => x.NomePaciente)
+    //            .NotEmpty()
+    //            .WithMessage("Patient name is required.");
+
+    //        RuleFor(x => x.MedicoIdFk)
+    //            .GreaterThan(0)
+    //            .WithMessage("Doctor ID must be greater than zero.");
+
+    //        RuleFor(x => x.DataHoraInicio)
+    //            .GreaterThan(DateTime.Now)
+    //            .WithMessage("Start time must be in the future or today.");
+
+    //        RuleFor(x => x.DataHoraFim)
+    //            .GreaterThan(x => x.DataHoraInicio)
+    //            .WithMessage("End time must be greater than start time.");
+
+    //        RuleFor(x => x.DataHoraFim)
+    //            .Must((consulta, fim) => ( fim - consulta.DataHoraInicio ) >= TimeSpan.FromMinutes(20))
+    //            .WithMessage("Duration must be at least 20 minutes.");
+    //    }
+    //}
+
 }
