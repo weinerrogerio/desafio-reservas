@@ -21,8 +21,8 @@ namespace WorkspaceReservas.Utils
             if ( result.HasError<BusinessRuleError>() )
                 return controller.UnprocessableEntity(new { errors });    // 422 (Unprocessable Entity)
 
-            if ( result.HasError<BusinessRuleError>() )
-                return controller.Conflict(new { errors });
+            if ( result.HasError<ConflictError>() )
+                return controller.Conflict(new { errors }); // 409 (Conflict)
 
             return controller.BadRequest(new { errors });                 // 400
         }

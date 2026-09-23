@@ -87,20 +87,20 @@ POST {{WorkspaceReservas_HostAddress}}/api/consultas
 Content-Type: application/json
 
 {  
-  "MedicoIdFk": 1,
-  "NomePaciente": "Teste",
-  "DataHoraInicio": "2026-09-23T18:00:00",
-  "DataHoraFim": "2026-09-23T18:21:00" 
+  "MedicoIdFk": 2,
+  "NomePaciente": "Teste2",
+  "DataHoraInicio": "2026-09-23T20:00:00",
+  "DataHoraFim": "2026-09-23T20:21:00" 
 }
 
 ###
 
-PATCH {{WorkspaceReservas_HostAddress}}/api/consultas/3
+PATCH {{WorkspaceReservas_HostAddress}}/api/consultas/9
 Content-Type: application/json
 
 {  
   "MedicoIdFk": 2,
-  "NomePaciente": "Teste2"
+  "NomePaciente": "Teste"
 }
 
 ###
@@ -108,9 +108,14 @@ Content-Type: application/json
 DELETE {{WorkspaceReservas_HostAddress}}/api/consultas/3
 
 
+###
+
+GET {{WorkspaceReservas_HostAddress}}/api/consultas
 
 
 ###
+
+GET {{WorkspaceReservas_HostAddress}}/api/consultas/3
 
 
 

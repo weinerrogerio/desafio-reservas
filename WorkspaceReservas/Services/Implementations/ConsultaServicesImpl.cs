@@ -25,18 +25,16 @@ namespace WorkspaceReservas.Services.Implementations
 
         public async Task<FluentResults.Result<ConsultaDTO>> Create(ConsultaDTO consulta)
         {
-            if( consulta == null ) return Result.Fail<ConsultaDTO>("O objeto consulta não pode ser nulo.");
-
             var medicoExiste = await _context.Medicos.AnyAsync(m => m.Id == consulta.MedicoIdFk);
             if ( !medicoExiste )
-                return Result.Fail<ConsultaDTO>($"Médico com ID {consulta.MedicoIdFk} não encontrado.");
+                return Result.Fail<ConsultaDTO>(new NotFoundError($"Médico com ID {consulta.MedicoIdFk} não encontrado."));
 
             bool existeConflito = await _context.Consultas
                 .AnyAsync(c => c.MedicoIdFk == consulta.MedicoIdFk &&
                                consulta.DataHoraInicio < c.DataHoraFim &&
                                consulta.DataHoraFim > c.DataHoraInicio);
 
-            if (existeConflito) return Result.Fail<ConsultaDTO>("Já existe uma consulta nesse horário para esse médico.");
+            if ( existeConflito ) return Result.Fail<ConsultaDTO>(new ConflictError("Já existe uma consulta nesse horário para esse médico.")); ;
 
             var entity = consulta.Adapt<Consulta>();
             _context.Consultas.Add(entity);
@@ -47,14 +45,12 @@ namespace WorkspaceReservas.Services.Implementations
         }
         public async Task<FluentResults.Result<ConsultaDTO>> Update(long id, ConsultaUpdateDTO consulta)
         {
-            if ( consulta == null ) return Result.Fail<ConsultaDTO>("O objeto consulta não pode ser nulo.");
-
             var entity = await _context.Consultas.FindAsync(id);
-            if ( entity == null ) return Result.Fail<ConsultaDTO>("Consulta não encontrada.");
+            if ( entity == null ) return Result.Fail<ConsultaDTO>(new NotFoundError("Consulta não encontrada."));
 
             var medicoExiste = await _context.Medicos.AnyAsync(m => m.Id == consulta.MedicoIdFk);
             if ( !medicoExiste )
-                return Result.Fail<ConsultaDTO>($"Médico com ID {consulta.MedicoIdFk} não encontrado.");
+                return Result.Fail<ConsultaDTO>(new NotFoundError($"Médico com ID {consulta.MedicoIdFk} não encontrado."));
 
             consulta.Adapt(entity); // copia só os campos não nulos para a entidade existente
 
@@ -64,8 +60,6 @@ namespace WorkspaceReservas.Services.Implementations
 
         public async Task<FluentResults.Result<ConsultaDTO>> Delete(long id)
         {
-            if ( id <= 0 ) return Result.Fail<ConsultaDTO>("ID inválido.");
-
             var entity = await _context.Consultas.FindAsync(id);
             if ( entity == null )
                 return Result.Fail<ConsultaDTO>(new NotFoundError("Consulta não encontrada, não pode ser deletada."));

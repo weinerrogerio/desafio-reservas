@@ -15,4 +15,11 @@ namespace WorkspaceReservas.Utils
     {
         public BusinessRuleError(string message) : base(message) { }
     }
+
+    public class ConflictError : Error
+    {
+        public ConflictError(string message) : base(message) { }
+    }
+
+
 }
