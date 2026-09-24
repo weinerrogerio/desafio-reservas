@@ -5,6 +5,7 @@ using WorkspaceReservas.Data.Dto;
 using WorkspaceReservas.Data.Dto.UpdateDTO;
 using WorkspaceReservas.Models;
 using WorkspaceReservas.Services;
+using WorkspaceReservas.Utils;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WorkspaceReservas.Controllers
@@ -20,70 +21,26 @@ namespace WorkspaceReservas.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MedicoDTO medico)
-        {
-            var result = await _medicosService.Create(medico);
-
-            if ( result.IsFailed )
-            {
-                // Retorna HTTP 400 Bad Request contendo a lista de erros do FluentResults
-                return BadRequest(result.Errors.Select(e => e.Message));
-            }
-
-            return Ok(result.Value);
-        }
+        public async Task<IActionResult> Create([FromBody] MedicoDTO medico) 
+            => ( await _medicosService.Create(medico) )
+            .ToActionResult(this, c => CreatedAtAction(nameof(FindById), new { id = c.Id }, c));
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update(long id, [FromBody] MedicoUpdateDTO medico)
-        {
-            var result = await _medicosService.Update(id, medico);
-            if (result.IsFailed)
-                return BadRequest(result.Errors.Select(e => e.Message));
-            return Ok(result.Value);
-        }
+            => ( await _medicosService.Update(id, medico) ).ToActionResult(this);
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
-        {
-            var result = await _medicosService.Delete(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors.Select(e => e.Message));
-            }
-            return Ok(result.Value);
-        }
+            => ( await _medicosService.Delete(id) ).ToActionResult(this, _ => NoContent());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> FindById(long id)
-        {
-            var result = await _medicosService.FindById(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors.Select(e => e.Message));
-            }
-            return Ok(result.Value);
-        }
+            => ( await _medicosService.FindById(id) ).ToActionResult(this);
 
         [HttpGet]
-        public async Task<IActionResult> List()
-        {
-            var result = await _medicosService.FindAll();
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors.Select(e => e.Message));
-            }
-            return Ok(result.Value);
-        }
+        public async Task<IActionResult> List() => ( await _medicosService.FindAll() ).ToActionResult(this);
 
         [HttpPatch("reativar/{id}")]
-        public async Task<IActionResult> Reativar(long id)
-        {
-            var result = await _medicosService.Reativar(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors.Select(e => e.Message));
-            }
-            return Ok(result.Value);
-        }
+        public async Task<IActionResult> Reativar(long id) => ( await _medicosService.Reativar(id) ).ToActionResult(this);
     }
 }

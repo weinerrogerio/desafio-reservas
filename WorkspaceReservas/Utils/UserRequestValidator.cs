@@ -10,20 +10,10 @@ using WorkspaceReservas.Models.Base;
 
 namespace WorkspaceReservas.Utils
 { 
-    //public class BaseRequestValidator<T> : AbstractValidator<T> where T : BaseEntity
-    //{
-    //    public BaseRequestValidator()
-    //    {
-    //        RuleFor(x => x.Id).GreaterThan(0).WithMessage("ID must be greater than zero.");
-    //    }
-    //}
-
-    // Validador específico herdando do validador base
     public class SalaRequestValidator : AbstractValidator<SalaDTO>
     {
         public SalaRequestValidator()
         {
-            // Já possui a validação do ID vinda do BaseRequestValidator!
             RuleFor(x => x.Nome)
                 .NotEmpty()
                 .NotNull()
@@ -109,10 +99,11 @@ namespace WorkspaceReservas.Utils
                 .NotEmpty()
                 .WithMessage("CRM is required.")
                 .MinimumLength(4)
-                .WithMessage("CRM must be at least 4 characters long.");
+                .WithMessage("CRM must be at least 4 characters long.")
+                .When(x => x.CRM != null);
         }
     }
-
+   
     public class ConsultaRequestValidator : AbstractValidator<ConsultaDTO>
     {
         public ConsultaRequestValidator()
@@ -137,33 +128,6 @@ namespace WorkspaceReservas.Utils
                 .Must((consulta, fim) => ( fim - consulta.DataHoraInicio ) >= TimeSpan.FromMinutes(20))
                 .WithMessage("Duration must be at least 20 minutes.");
         }
-    }
-
-    //rever se precisa
-    //public class ConsultaRequestUpdateValidator : AbstractValidator<ConsultaUpdateDTO>
-    //{
-    //    public ConsultaRequestUpdateValidator()
-    //    {
-    //        RuleFor(x => x.NomePaciente)
-    //            .NotEmpty()
-    //            .WithMessage("Patient name is required.");
-
-    //        RuleFor(x => x.MedicoIdFk)
-    //            .GreaterThan(0)
-    //            .WithMessage("Doctor ID must be greater than zero.");
-
-    //        RuleFor(x => x.DataHoraInicio)
-    //            .GreaterThan(DateTime.Now)
-    //            .WithMessage("Start time must be in the future or today.");
-
-    //        RuleFor(x => x.DataHoraFim)
-    //            .GreaterThan(x => x.DataHoraInicio)
-    //            .WithMessage("End time must be greater than start time.");
-
-    //        RuleFor(x => x.DataHoraFim)
-    //            .Must((consulta, fim) => ( fim - consulta.DataHoraInicio ) >= TimeSpan.FromMinutes(20))
-    //            .WithMessage("Duration must be at least 20 minutes.");
-    //    }
-    //}
+    }   
 
 }

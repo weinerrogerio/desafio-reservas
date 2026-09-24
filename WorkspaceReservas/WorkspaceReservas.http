@@ -65,7 +65,7 @@ Content-type: application/json
 
 {
   "Nome" :"Teste2",
-  "CRM": "1234",
+  "CRM": "1253",
   "Especialidade": "ESPECIALIDADE - Teste"
 }
 
@@ -88,19 +88,19 @@ Content-Type: application/json
 
 {  
   "MedicoIdFk": 2,
-  "NomePaciente": "Teste2",
-  "DataHoraInicio": "2026-09-23T20:00:00",
-  "DataHoraFim": "2026-09-23T20:21:00" 
+  "NomePaciente": "Teste3",
+  "DataHoraInicio": "2026-09-24T21:26:00",
+  "DataHoraFim": "2026-09-24T22:00:00" 
 }
 
 ###
 
-PATCH {{WorkspaceReservas_HostAddress}}/api/consultas/9
+PATCH {{WorkspaceReservas_HostAddress}}/api/consultas/12
 Content-Type: application/json
 
 {  
-  "MedicoIdFk": 2,
-  "NomePaciente": "Teste"
+  "dataHoraInicio": "2026-09-24T19:00:00",
+  "dataHoraFim": "2026-09-24T19:30:00"
 }
 
 ###

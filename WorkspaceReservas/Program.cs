@@ -29,8 +29,8 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 //Adicionando o FluentValidation e registrando os validadores
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SalaRequestValidator>();
-//builder.Services.AddValidatorsFromAssemblyContaining<SalaUpdateValidator>();// não é necessário, pois o FluentValidation já valida os campos não nulos do DTO de atualização
 builder.Services.AddValidatorsFromAssemblyContaining<ReservaRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<MedicoRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<ConsultaRequestValidator>();
 
 builder.Services.AddControllers();
